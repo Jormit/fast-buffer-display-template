@@ -18,7 +18,7 @@ struct RGB {
     uint8_t red;
     uint8_t green;
     uint8_t blue;
-} frameBuffer[400000];
+} frameBuffer[SCREEN_HEIGHT][SCREEN_WIDTH];
 
 void init_sdl ();
 void update_screen ();
@@ -62,10 +62,12 @@ void init_sdl (){
 }
 
 void update_screen (){
-    for (long i = 0; i < 400000; i++) {
-        frameBuffer[i].red = (float)(i % 1000)/1000.0f * 255;
-        frameBuffer[i].green = (float)(i/1000 % 400)/400.0f * 255;
-        frameBuffer[i].blue = (float)(1000 - (i % 1000))/1000.0f * 255;
+    for (int x = 0; x < SCREEN_WIDTH; x++) {
+        for (int y = 0; y < SCREEN_HEIGHT; y++) {
+            frameBuffer[y][x].red = 255 * (float) x / SCREEN_WIDTH;
+            frameBuffer[y][x].blue = 255 * (float) (SCREEN_WIDTH - x) / SCREEN_WIDTH;
+            frameBuffer[y][x].green = 255 * (float) (y) / SCREEN_HEIGHT;
+        }
     }
 
     SDL_Delay(15); //Wait for 15 milliseconds.
